@@ -13,14 +13,16 @@ namespace Capstone.Classes
     /// </remarks>
     public class UserInterface
     {
+        private decimal accountBalance = 0;
+
+        private Catering catering;
+        public FileAccess FileAccess { get; set; }
         public UserInterface()
         {
-           this.FileAccess = new FileAccess(catering);
+            this.catering = new Catering();
+            this.FileAccess = new FileAccess(catering);
             FileAccess.GenerateList();
         }
-
-        private Catering catering = new Catering();
-        public FileAccess FileAccess { get; set; }
 
         public void RunInterface()
         {
@@ -36,7 +38,7 @@ namespace Capstone.Classes
                         break;
 
                     case "2":
-
+                        DisplayPurchaseMenu();
                         break;
 
                     case "3":
@@ -45,7 +47,6 @@ namespace Capstone.Classes
 
                     default:
                         Console.WriteLine("Please make a valid selection.");
-
                         break;
                 }
             }
@@ -70,5 +71,65 @@ namespace Capstone.Classes
             }
             Console.WriteLine();
         }
+
+        public void DisplayPurchaseMenu()
+        {
+            
+
+            
+
+            bool keepGoing = true;
+            while (keepGoing)
+            {
+                string userInput = GetDisplayMenuChoice();
+
+                switch (userInput.ToLower())
+                {
+                    case "1":
+                        AddMoney();
+                        break;
+
+                    case "2":
+                        //SelectProducts();
+                        break;
+
+                    case "3":
+                        keepGoing = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Please make a valid selection.");
+                        break;
+                }
+            }
+        }
+        public string GetDisplayMenuChoice()
+        {
+            Console.WriteLine("(1) Add Money");
+            Console.WriteLine("(2) Select Products");
+            Console.WriteLine("(3) Complete Transaction");
+            Console.WriteLine("Current Account Balance: $" + accountBalance);
+            Console.WriteLine();
+            string userInput = Console.ReadLine();
+            Console.WriteLine();
+
+            return userInput;
+        }
+
+        public decimal AddMoney()
+        {
+            Console.WriteLine("How much money (in dollars) would you like to add?");
+            int userInput = int.Parse(Console.ReadLine());
+            
+            if (accountBalance + userInput > 5000)
+            {
+                Console.WriteLine("Cannot exceed $5,000 in account");
+                Console.WriteLine();
+                return accountBalance;
+            }
+            return accountBalance += userInput;
+            
+        }
     }
 }
+
