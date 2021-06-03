@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.IO;
 namespace Capstone.Classes
 {
     /// <summary>
@@ -13,7 +13,17 @@ namespace Capstone.Classes
     public class Catering
     {
         private List<CateringItem> items = new List<CateringItem>();
-        
+
+        public void GenerateList()
+        {
+            try
+            {
+                using (StreamReader reader = new StreamReader(FileAccess.fullPath))
+                {
+
+                }
+            }
+        }
 
    
     }

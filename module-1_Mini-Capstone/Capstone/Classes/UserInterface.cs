@@ -14,17 +14,46 @@ namespace Capstone.Classes
     public class UserInterface
     {
         private Catering catering = new Catering();
-
+        public FileAccess FileAccess { get; set; }
         public void RunInterface()
         {
             bool done = false;
 
             while (!done)
             {
-                Console.WriteLine("Put details of your user interface here");
+                string userInput = GetUserMenuChoice();
+                switch (userInput.ToLower())
+                {
+                    case "1":
 
-                Console.ReadLine();
+                        break;
+
+                    case "2":
+
+                        break;
+
+                    case "3":
+
+                        break;
+
+                    default:
+                        Console.WriteLine("Please make a valid selection.");
+
+                        break;
+                }
             }
+        }
+        private string GetUserMenuChoice()
+        {
+            Console.WriteLine("(1) Display Catering Items");
+            Console.WriteLine("(2) Order");
+            Console.WriteLine("(3) Quit");
+            Console.WriteLine("");
+            string userInput = Console.ReadLine();
+            Console.WriteLine("");
+
+            return userInput;
+
         }
     }
 }

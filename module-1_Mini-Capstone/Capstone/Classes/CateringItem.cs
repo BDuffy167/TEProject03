@@ -12,6 +12,10 @@ namespace Capstone.Classes
     /// </remarks>
     public class CateringItem
     {
-
+        public string ItemCode { get; set; }
+        public string ItemName { get; set; }
+        public decimal ItemPrice { get; set; }
+        public string ItemType { get; set; }
+        public int ItemAmmount { get; set; } = 50;
     }
 }
