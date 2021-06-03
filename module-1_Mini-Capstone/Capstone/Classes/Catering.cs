@@ -14,17 +14,15 @@ namespace Capstone.Classes
     {
         private List<CateringItem> items = new List<CateringItem>();
 
-        public void GenerateList()
+        public void AddItem(string item)
         {
-            try
-            {
-                using (StreamReader reader = new StreamReader(FileAccess.fullPath))
-                {
+            string[] itemAdded = item.Split('|');
+            CateringItem newItem = new CateringItem();
+            newItem.ItemCode = itemAdded[0];
+            newItem.ItemName = itemAdded[1];
+            newItem.ItemPrice = decimal.Parse(itemAdded[2]);
+            newItem.ItemType = itemAdded[3];
 
-                }
-            }
         }
-
-   
     }
 }

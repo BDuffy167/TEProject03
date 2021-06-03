@@ -17,5 +17,9 @@ namespace Capstone.Classes
         public decimal ItemPrice { get; set; }
         public string ItemType { get; set; }
         public int ItemAmmount { get; set; } = 50;
+        public override string ToString()
+        {
+            return this.ItemCode + " " + this.ItemName + " " + this.ItemPrice + " " + this.ItemType + " " + this.ItemAmmount;
+        }
     }
 }

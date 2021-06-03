@@ -14,15 +14,26 @@ namespace Capstone.Classes
     {
         // All external data files for this application should live in this directory.
         // You will likely need to create this directory and copy / paste any needed files.
-        public string FilePath { get; }
-        string filePath = @"C:\Catering\cateringsystem";
-        public FileAccess(filePath)
+        
+        private string filePath = @"C:\Catering\cateringsystem.csv";
+        private List<string> StringItems { get; set; } = new List<string>();
+        public void GenerateList()
         {
-            this.FilePath = filePath;
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        string items = reader.ReadLine();
+                        this.StringItems.Add(items);
 
-
-
+                        Catering.AddItem(items);
+                    }
+                }
+            }
         }
+
     }
 }
 

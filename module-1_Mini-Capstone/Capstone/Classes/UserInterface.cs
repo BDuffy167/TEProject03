@@ -25,7 +25,7 @@ namespace Capstone.Classes
                 switch (userInput.ToLower())
                 {
                     case "1":
-
+                        DisplayList();
                         break;
 
                     case "2":
@@ -53,6 +53,10 @@ namespace Capstone.Classes
             Console.WriteLine("");
 
             return userInput;
+
+        }
+        public void DisplayList()
+        {
 
         }
     }
