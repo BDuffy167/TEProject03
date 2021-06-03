@@ -12,14 +12,14 @@ namespace Capstone.Classes
     /// </remarks>
     public class CateringItem
     {
-        public string ItemCode { get; set; }
-        public string ItemName { get; set; }
-        public decimal ItemPrice { get; set; }
-        public string ItemType { get; set; }
-        public int ItemAmmount { get; set; } = 50;
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public string Type { get; set; }
+        public int Ammount { get; set; } = 50;
         public override string ToString()
         {
-            return this.ItemCode + " " + this.ItemName + " " + this.ItemPrice + " " + this.ItemType + " " + this.ItemAmmount;
+            return this.Code + " " + this.Name + " $" + this.Price + " " + this.Type + " #" + this.Ammount;
         }
     }
 }

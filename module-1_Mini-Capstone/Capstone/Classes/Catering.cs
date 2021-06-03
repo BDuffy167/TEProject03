@@ -14,15 +14,26 @@ namespace Capstone.Classes
     {
         private List<CateringItem> items = new List<CateringItem>();
 
+        public List<CateringItem> Ughhhh
+        {
+            get
+            {
+                return items;
+            }
+        }
+
         public void AddItem(string item)
         {
+            
             string[] itemAdded = item.Split('|');
             CateringItem newItem = new CateringItem();
-            newItem.ItemCode = itemAdded[0];
-            newItem.ItemName = itemAdded[1];
-            newItem.ItemPrice = decimal.Parse(itemAdded[2]);
-            newItem.ItemType = itemAdded[3];
+            newItem.Code = itemAdded[0];
+            newItem.Name = itemAdded[1];
+            newItem.Price = decimal.Parse(itemAdded[2]);
+            newItem.Type = itemAdded[3];
 
+            items.Add(newItem);
         }
+
     }
 }

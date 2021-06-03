@@ -13,8 +13,15 @@ namespace Capstone.Classes
     /// </remarks>
     public class UserInterface
     {
+        public UserInterface()
+        {
+           this.FileAccess = new FileAccess(catering);
+            FileAccess.GenerateList();
+        }
+
         private Catering catering = new Catering();
         public FileAccess FileAccess { get; set; }
+
         public void RunInterface()
         {
             bool done = false;
@@ -57,7 +64,11 @@ namespace Capstone.Classes
         }
         public void DisplayList()
         {
-
+            foreach (CateringItem i in catering.Ughhhh)
+            {
+                Console.WriteLine(i);
+            }
+            Console.WriteLine();
         }
     }
 }
