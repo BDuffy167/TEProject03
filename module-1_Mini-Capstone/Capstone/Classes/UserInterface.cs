@@ -15,7 +15,7 @@ namespace Capstone.Classes
     {
         Dictionary<CateringItem, int> purchaseList = new Dictionary<CateringItem, int>();
 
-        private decimal accountBalance = 0;
+        private decimal accountBalance = 0.00m;
 
         private Catering catering;
         public FileAccess FileAccess { get; set; }
@@ -76,9 +76,9 @@ namespace Capstone.Classes
 
         public void DisplayPurchaseMenu()
         {
-            
 
-            
+
+
 
             bool keepGoing = true;
             while (keepGoing)
@@ -97,7 +97,7 @@ namespace Capstone.Classes
 
                     case "3":
                         CompleteTransaction();
-                        break;
+                        return;
 
                     default:
                         Console.WriteLine("Please make a valid selection.");
@@ -121,16 +121,17 @@ namespace Capstone.Classes
         public decimal AddMoney()
         {
             Console.WriteLine("How much money (in dollars) would you like to add?");
-            int userInput = int.Parse(Console.ReadLine());
-            
+            decimal userInput = decimal.Parse(Console.ReadLine()) + 0.00m;
+
             if (accountBalance + userInput > 5000)
             {
                 Console.WriteLine("Cannot exceed $5,000 in account");
                 Console.WriteLine();
                 return accountBalance;
             }
+            FileAccess.AuditBalance(userInput, (accountBalance += userInput));
             return accountBalance += userInput;
-            
+
         }
         public void SelectProducts()
         {
@@ -139,32 +140,32 @@ namespace Capstone.Classes
             Console.WriteLine("What is the quantity you would like to purchase?");
             int selectQuantity = int.Parse(Console.ReadLine());
 
-            
+
 
             foreach (CateringItem i in this.catering.FullList)
             {
                 if (selectCode == i.Code)
                 {
-                    if (i.Ammount  - selectQuantity >= 0)
+                    if (i.Ammount - selectQuantity >= 0)
                     {
-
+                        FileAccess.AuditProduct(i, selectQuantity);
                         if (purchaseList.ContainsKey(i))
                         {
                             purchaseList[i] += selectQuantity;
                             i.Ammount -= selectQuantity;
-                                return;
+                            return;
                         }
                         else
                         {
                             purchaseList.Add(i, selectQuantity);
                             i.Ammount -= selectQuantity;
-                                return;
+                            return;
                         }
                     }
                     else
                     {
                         Console.WriteLine("Sorry, the item you have selected is sold out.");
-                            return;
+                        return;
 
                     }
                 }
@@ -179,7 +180,7 @@ namespace Capstone.Classes
         {
             decimal totalCost = 0;
 
-            foreach (KeyValuePair<CateringItem,int> item in purchaseList)
+            foreach (KeyValuePair<CateringItem, int> item in purchaseList)
             {
                 totalCost += item.Key.Price * item.Value;
             }
@@ -213,12 +214,16 @@ namespace Capstone.Classes
                 };
                 Console.WriteLine();
                 Console.WriteLine("Your change will be: ");
-                
+
                 foreach (KeyValuePair<string, decimal> i in money)
                 {
                     int billCount = (int)(change / money[i.Key]);
                     Console.WriteLine(billCount + " " + i.Key);
+                    change -= billCount * i.Value;
                 }
+                FileAccess.AuditChange();
+                accountBalance = 0;
+                return;
             }
         }
     }

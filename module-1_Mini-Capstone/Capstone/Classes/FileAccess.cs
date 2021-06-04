@@ -15,8 +15,13 @@ namespace Capstone.Classes
         // All external data files for this application should live in this directory.
         // You will likely need to create this directory and copy / paste any needed files.
 
+        DateTime now = DateTime.Now;
         private string filePath = @"C:\Catering\cateringsystem.csv";
+        string dataFile = @"C:\Catering\Log.txt";
         private Catering catering;
+
+        decimal fileBalance = 0.00m;
+
         public FileAccess(Catering catering)
         {
             this.catering = catering;
@@ -32,7 +37,7 @@ namespace Capstone.Classes
                     while (!reader.EndOfStream)
                     {
                         string item = reader.ReadLine();
-                        
+
                         catering.AddItem(item);
                     }
 
@@ -43,7 +48,55 @@ namespace Capstone.Classes
 
             }
         }
+        public void AuditBalance(decimal money, decimal balance)
+        {
+            fileBalance += balance;
 
+            try
+            {
+                using (StreamWriter dataOutput = new StreamWriter(dataFile, true))
+                {
+                    
+                        dataOutput.WriteLine($"{DateTime.Now} ADD MONEY:  ${money} ${fileBalance}");
+                    
+                    
+                }
+            }
+            catch (IOException)
+            {
+
+            }
+        }
+        public void AuditProduct(CateringItem item, int amount)
+        {
+            fileBalance -= item.Price * amount;
+            try
+            {
+                using (StreamWriter dataOutput = new StreamWriter(dataFile, true))
+                {
+                    dataOutput.WriteLine($"{DateTime.Now} {amount} {item.Name} {item.Code} ${amount * item.Price} ${fileBalance}");
+                }
+            }
+            catch (IOException)
+            {
+
+            }
+        }
+        public void AuditChange()
+        {
+            try
+            {
+                using (StreamWriter dataOutput = new StreamWriter(dataFile, true))
+                {
+                    dataOutput.WriteLine($"{DateTime.Now} GIVE CHANGE: ${fileBalance} $0.00");
+                }
+                fileBalance = 0;
+            }
+            catch (IOException)
+            {
+
+            }
+        }
     }
 }
 
