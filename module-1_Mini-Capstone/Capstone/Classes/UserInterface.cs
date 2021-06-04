@@ -118,16 +118,28 @@ namespace Capstone.Classes
         public decimal AddMoney()
         {
             Console.WriteLine("How much money (in dollars) would you like to add?");
-            decimal userInput = decimal.Parse(Console.ReadLine());
 
-            if (accountBalance + userInput > 5000)
+            try
             {
-                Console.WriteLine("Cannot exceed $5,000 in account");
+                int userInput = int.Parse(Console.ReadLine());
+
+                if (accountBalance + userInput > 5000)
+                {
+                    Console.WriteLine("Cannot exceed $5,000 in account");
+                    Console.WriteLine();
+                    return accountBalance;
+                }
+                FileAccess.AuditBalance(userInput, (accountBalance + userInput));
+                Console.WriteLine();
+                return accountBalance += userInput;
+            }
+            catch
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a valid Number");
                 Console.WriteLine();
                 return accountBalance;
             }
-            FileAccess.AuditBalance(userInput, (accountBalance + userInput));
-            return accountBalance += userInput;
 
         }
         public void SelectProducts()
@@ -197,7 +209,7 @@ namespace Capstone.Classes
             {
                 foreach (KeyValuePair<CateringItem, int> item in purchaseList)
                 {
-                    Console.WriteLine($"{item.Value} {item.Key.Type} {item.Key.Name}  ${item.Key.Price} ${item.Key.Price * item.Value}");
+                    Console.WriteLine($"{item.Value} {item.Key.Type} {item.Key.Name} ${item.Key.Price} ${item.Key.Price * item.Value}");
                 }
                 Console.WriteLine();
                 Console.WriteLine("Total: $" + totalCost);
@@ -206,12 +218,12 @@ namespace Capstone.Classes
                 decimal change = accountBalance - totalCost;
                 Dictionary<string, decimal> money = new Dictionary<string, decimal>()
                 {
-                    {"Twenties",20.00m },
-                    {"Tens",10.00m },
-                    {"Fives",5.00m },
-                    {"Ones",1.00m },
-                    {"Quarters",0.25m },
-                    {"Dimes",0.10m },
+                    {"Twenties,",20.00m },
+                    {"Tens,",10.00m },
+                    {"Fives,",5.00m },
+                    {"Ones,",1.00m },
+                    {"Quarters,",0.25m },
+                    {"Dimes,",0.10m },
                     {"Nickles",0.05m },
 
                 };
@@ -221,11 +233,12 @@ namespace Capstone.Classes
                 foreach (KeyValuePair<string, decimal> i in money)
                 {
                     int billCount = (int)(change / money[i.Key]);
-                    Console.WriteLine(billCount + " " + i.Key);
+                    Console.Write(billCount + " " + i.Key + " ");
                     change -= billCount * i.Value;
                 }
                 FileAccess.AuditChange();
                 accountBalance = 0;
+                Console.WriteLine();
                 Console.WriteLine();
                 return;
             }
