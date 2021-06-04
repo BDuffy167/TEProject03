@@ -13,6 +13,8 @@ namespace Capstone.Classes
     /// </remarks>
     public class UserInterface
     {
+        Dictionary<CateringItem, int> purchaseList = new Dictionary<CateringItem, int>();
+
         private decimal accountBalance = 0;
 
         private Catering catering;
@@ -65,7 +67,7 @@ namespace Capstone.Classes
         }
         public void DisplayList()
         {
-            foreach (CateringItem i in catering.Ughhhh)
+            foreach (CateringItem i in catering.FullList)
             {
                 Console.WriteLine(i);
             }
@@ -90,7 +92,7 @@ namespace Capstone.Classes
                         break;
 
                     case "2":
-                        //SelectProducts();
+                        SelectProducts();
                         break;
 
                     case "3":
@@ -129,6 +131,34 @@ namespace Capstone.Classes
             }
             return accountBalance += userInput;
             
+        }
+        public void SelectProducts()
+        {
+            Console.WriteLine("What is the items product code?");
+            string selectCode = Console.ReadLine();
+            Console.WriteLine("What is the quantity you would like to purchase?");
+            int selectQuantity = int.Parse(Console.ReadLine());
+
+            foreach (CateringItem i in this.catering.FullList)
+            {
+                if (selectCode == i.Code)
+                {
+                    if (i.Ammount  - selectQuantity >= 0)
+                    {
+
+                        if (purchaseList.ContainsKey(i))
+                        {
+                            purchaseList[i] += selectQuantity;
+                        }
+                        else
+                        {
+                            purchaseList.Add(i, selectQuantity);
+                        }
+                    }
+                }
+            }
+
+
         }
     }
 }

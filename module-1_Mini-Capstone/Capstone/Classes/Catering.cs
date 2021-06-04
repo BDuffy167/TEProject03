@@ -14,7 +14,7 @@ namespace Capstone.Classes
     {
         private List<CateringItem> items = new List<CateringItem>();
 
-        public List<CateringItem> Ughhhh
+        public List<CateringItem> FullList
         {
             get
             {
