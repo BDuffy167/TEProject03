@@ -44,7 +44,7 @@ namespace Capstone.Classes
                         break;
 
                     case "3":
-
+                        done = true;
                         break;
 
                     default:
@@ -96,7 +96,7 @@ namespace Capstone.Classes
                         break;
 
                     case "3":
-                        keepGoing = false;
+                        CompleteTransaction();
                         break;
 
                     default:
@@ -139,6 +139,8 @@ namespace Capstone.Classes
             Console.WriteLine("What is the quantity you would like to purchase?");
             int selectQuantity = int.Parse(Console.ReadLine());
 
+            
+
             foreach (CateringItem i in this.catering.FullList)
             {
                 if (selectCode == i.Code)
@@ -149,16 +151,75 @@ namespace Capstone.Classes
                         if (purchaseList.ContainsKey(i))
                         {
                             purchaseList[i] += selectQuantity;
+                            i.Ammount -= selectQuantity;
+                                return;
                         }
                         else
                         {
                             purchaseList.Add(i, selectQuantity);
+                            i.Ammount -= selectQuantity;
+                                return;
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Sorry, the item you have selected is sold out.");
+                            return;
+
                     }
                 }
             }
 
+            Console.WriteLine("This item doesn't exist.");
+            return;
 
+
+        }
+        public void CompleteTransaction()
+        {
+            decimal totalCost = 0;
+
+            foreach (KeyValuePair<CateringItem,int> item in purchaseList)
+            {
+                totalCost += item.Key.Price * item.Value;
+            }
+
+
+            if (accountBalance < totalCost)
+            {
+                Console.WriteLine("Insufficient funds.");
+                return;
+            }
+            else
+            {
+                foreach (KeyValuePair<CateringItem, int> item in purchaseList)
+                {
+                    Console.WriteLine($"{item.Value} {item.Key.Type} {item.Key.Name}  ${item.Key.Price} ${item.Key.Price * item.Value}");
+                }
+                Console.WriteLine();
+                Console.WriteLine("Total: $" + totalCost);
+
+                decimal change = accountBalance - totalCost;
+                Dictionary<string, decimal> money = new Dictionary<string, decimal>()
+                {
+                    {"Twenties",20.00m },
+                    {"Tens",10.00m },
+                    {"Fives",5.00m },
+                    {"Ones",1.00m },
+                    {"Quarters",0.25m },
+                    {"Dimes",0.10m },
+                    {"Nickles",0.05m },
+
+                };
+                Console.WriteLine();
+                Console.WriteLine("Your change will be: ");
+                
+                foreach (KeyValuePair<string, decimal> i in money)
+                {
+                    int billCount = (int)(change / money[i.Key]);
+                    Console.WriteLine(billCount + " " + i.Key);
+                }
+            }
         }
     }
 }
