@@ -24,7 +24,7 @@ namespace Capstone.Classes
 
         public void AddItem(string item)
         {
-            
+
             string[] itemAdded = item.Split('|');
             CateringItem newItem = new CateringItem();
             newItem.Code = itemAdded[0];

@@ -49,6 +49,7 @@ namespace Capstone.Classes
 
                     default:
                         Console.WriteLine("Please make a valid selection.");
+                        Console.WriteLine();
                         break;
                 }
             }
@@ -75,10 +76,6 @@ namespace Capstone.Classes
 
         public void DisplayPurchaseMenu()
         {
-
-
-
-
             bool keepGoing = true;
             while (keepGoing)
             {
@@ -100,6 +97,7 @@ namespace Capstone.Classes
 
                     default:
                         Console.WriteLine("Please make a valid selection.");
+                        Console.WriteLine();
                         break;
                 }
             }
@@ -109,6 +107,7 @@ namespace Capstone.Classes
             Console.WriteLine("(1) Add Money");
             Console.WriteLine("(2) Select Products");
             Console.WriteLine("(3) Complete Transaction");
+            Console.WriteLine();
             Console.WriteLine("Current Account Balance: $" + accountBalance);
             string userInput = Console.ReadLine();
             Console.WriteLine();
@@ -119,7 +118,7 @@ namespace Capstone.Classes
         public decimal AddMoney()
         {
             Console.WriteLine("How much money (in dollars) would you like to add?");
-            decimal userInput = decimal.Parse(Console.ReadLine()) + 0.00m;
+            decimal userInput = decimal.Parse(Console.ReadLine());
 
             if (accountBalance + userInput > 5000)
             {
@@ -127,7 +126,7 @@ namespace Capstone.Classes
                 Console.WriteLine();
                 return accountBalance;
             }
-            FileAccess.AuditBalance(userInput, (accountBalance += userInput));
+            FileAccess.AuditBalance(userInput, (accountBalance + userInput));
             return accountBalance += userInput;
 
         }
