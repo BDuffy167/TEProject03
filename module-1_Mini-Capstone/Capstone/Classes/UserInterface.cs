@@ -58,7 +58,6 @@ namespace Capstone.Classes
             Console.WriteLine("(1) Display Catering Items");
             Console.WriteLine("(2) Order");
             Console.WriteLine("(3) Quit");
-            Console.WriteLine("");
             string userInput = Console.ReadLine();
             Console.WriteLine("");
 
@@ -111,7 +110,6 @@ namespace Capstone.Classes
             Console.WriteLine("(2) Select Products");
             Console.WriteLine("(3) Complete Transaction");
             Console.WriteLine("Current Account Balance: $" + accountBalance);
-            Console.WriteLine();
             string userInput = Console.ReadLine();
             Console.WriteLine();
 
@@ -137,14 +135,16 @@ namespace Capstone.Classes
         {
             Console.WriteLine("What is the items product code?");
             string selectCode = Console.ReadLine();
+            Console.WriteLine();
             Console.WriteLine("What is the quantity you would like to purchase?");
             int selectQuantity = int.Parse(Console.ReadLine());
+            Console.WriteLine();
 
 
 
             foreach (CateringItem i in this.catering.FullList)
             {
-                if (selectCode == i.Code)
+                if (selectCode.ToLower() == i.Code.ToLower())
                 {
                     if (i.Ammount - selectQuantity >= 0)
                     {
@@ -164,7 +164,8 @@ namespace Capstone.Classes
                     }
                     else
                     {
-                        Console.WriteLine("Sorry, the item you have selected is sold out.");
+                        Console.WriteLine("Sorry, insufficient amount of item.");
+                        Console.WriteLine();
                         return;
 
                     }
@@ -172,6 +173,7 @@ namespace Capstone.Classes
             }
 
             Console.WriteLine("This item doesn't exist.");
+            Console.WriteLine();
             return;
 
 
@@ -189,6 +191,7 @@ namespace Capstone.Classes
             if (accountBalance < totalCost)
             {
                 Console.WriteLine("Insufficient funds.");
+                Console.WriteLine();
                 return;
             }
             else
@@ -199,6 +202,7 @@ namespace Capstone.Classes
                 }
                 Console.WriteLine();
                 Console.WriteLine("Total: $" + totalCost);
+                Console.WriteLine();
 
                 decimal change = accountBalance - totalCost;
                 Dictionary<string, decimal> money = new Dictionary<string, decimal>()
@@ -223,6 +227,7 @@ namespace Capstone.Classes
                 }
                 FileAccess.AuditChange();
                 accountBalance = 0;
+                Console.WriteLine();
                 return;
             }
         }

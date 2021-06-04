@@ -17,9 +17,36 @@ namespace Capstone.Classes
         public decimal Price { get; set; }
         public string Type { get; set; }
         public int Ammount { get; set; } = 50;
+        public string FullType
+        {
+            get
+            {
+                switch (this.Type)
+                {
+                    case "B":
+                        return "Beverage";
+                    case "A":
+                        return "Appetizer";
+                    case "E":
+                        return "Entree";
+                    case "D":
+                        return "Dessert";
+
+                    default:
+                        return "";
+                }
+            }
+        }
         public override string ToString()
         {
-            return this.Code + " " + this.Name + " $" + this.Price + " " + this.Type + " #" + this.Ammount;
+            if (this.Ammount > 0)
+            {
+                return this.Code + " " + this.Name + " $" + this.Price + " " + this.FullType + " #" + this.Ammount;
+            }
+            else
+            {
+                return this.Code + " " + this.Name + " $" + this.Price + " " + this.FullType + " SOLD OUT";
+            }
         }
     }
 }

@@ -43,9 +43,9 @@ namespace Capstone.Classes
 
                 }
             }
-            catch
+            catch (IOException ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
         }
         public void AuditBalance(decimal money, decimal balance)
@@ -56,15 +56,15 @@ namespace Capstone.Classes
             {
                 using (StreamWriter dataOutput = new StreamWriter(dataFile, true))
                 {
-                    
-                        dataOutput.WriteLine($"{DateTime.Now} ADD MONEY:  ${money} ${fileBalance}");
-                    
-                    
+
+                    dataOutput.WriteLine($"{DateTime.Now} ADD MONEY: ${money} ${fileBalance}");
+
+
                 }
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
         }
         public void AuditProduct(CateringItem item, int amount)
@@ -77,9 +77,9 @@ namespace Capstone.Classes
                     dataOutput.WriteLine($"{DateTime.Now} {amount} {item.Name} {item.Code} ${amount * item.Price} ${fileBalance}");
                 }
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
         }
         public void AuditChange()
@@ -92,9 +92,9 @@ namespace Capstone.Classes
                 }
                 fileBalance = 0;
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
         }
     }
