@@ -127,7 +127,7 @@ namespace Capstone.Classes
                 Console.WriteLine();
                 return accountBalance;
             }
-            FileAccess.AuditBalance(userInput, (accountBalance += userInput));
+            FileAccess.AuditBalance(userInput, (accountBalance + userInput));
             return accountBalance += userInput;
 
         }
