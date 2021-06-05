@@ -148,46 +148,55 @@ namespace Capstone.Classes
             string selectCode = Console.ReadLine();
             Console.WriteLine();
             Console.WriteLine("What is the quantity you would like to purchase?");
-            int selectQuantity = int.Parse(Console.ReadLine());
-            Console.WriteLine();
 
-
-
-            foreach (CateringItem i in this.catering.FullList)
+            try
             {
-                if (selectCode.ToLower() == i.Code.ToLower())
+                int selectQuantity = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+
+
+
+                foreach (CateringItem i in this.catering.FullList)
                 {
-                    if (i.Ammount - selectQuantity >= 0)
+                    if (selectCode.ToLower() == i.Code.ToLower())
                     {
-                        FileAccess.AuditProduct(i, selectQuantity);
-                        if (purchaseList.ContainsKey(i))
+                        if (i.Ammount - selectQuantity >= 0)
                         {
-                            purchaseList[i] += selectQuantity;
-                            i.Ammount -= selectQuantity;
-                            return;
+                            FileAccess.AuditProduct(i, selectQuantity);
+                            if (purchaseList.ContainsKey(i))
+                            {
+                                purchaseList[i] += selectQuantity;
+                                i.Ammount -= selectQuantity;
+                                return;
+                            }
+                            else
+                            {
+                                purchaseList.Add(i, selectQuantity);
+                                i.Ammount -= selectQuantity;
+                                return;
+                            }
                         }
                         else
                         {
-                            purchaseList.Add(i, selectQuantity);
-                            i.Ammount -= selectQuantity;
+                            Console.WriteLine("Sorry, insufficient amount of item.");
+                            Console.WriteLine();
                             return;
+
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("Sorry, insufficient amount of item.");
-                        Console.WriteLine();
-                        return;
-
-                    }
                 }
+
+                Console.WriteLine("This item doesn't exist.");
+                Console.WriteLine();
+                return;
+
             }
-
-            Console.WriteLine("This item doesn't exist.");
-            Console.WriteLine();
-            return;
-
-
+            catch
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a valid input for item quantity");
+                Console.WriteLine();
+            }
         }
         public void CompleteTransaction()
         {
