@@ -49,6 +49,7 @@ namespace Capstone.Classes
 
                     default:
                         Console.WriteLine("Please make a valid selection.");
+                        Console.WriteLine();
                         break;
                 }
             }
@@ -75,10 +76,6 @@ namespace Capstone.Classes
 
         public void DisplayPurchaseMenu()
         {
-
-
-
-
             bool keepGoing = true;
             while (keepGoing)
             {
@@ -100,6 +97,7 @@ namespace Capstone.Classes
 
                     default:
                         Console.WriteLine("Please make a valid selection.");
+                        Console.WriteLine();
                         break;
                 }
             }
@@ -109,6 +107,7 @@ namespace Capstone.Classes
             Console.WriteLine("(1) Add Money");
             Console.WriteLine("(2) Select Products");
             Console.WriteLine("(3) Complete Transaction");
+            Console.WriteLine();
             Console.WriteLine("Current Account Balance: $" + accountBalance);
             string userInput = Console.ReadLine();
             Console.WriteLine();
@@ -119,16 +118,28 @@ namespace Capstone.Classes
         public decimal AddMoney()
         {
             Console.WriteLine("How much money (in dollars) would you like to add?");
-            decimal userInput = decimal.Parse(Console.ReadLine()) + 0.00m;
 
-            if (accountBalance + userInput > 5000)
+            try
             {
-                Console.WriteLine("Cannot exceed $5,000 in account");
+                int userInput = int.Parse(Console.ReadLine());
+
+                if (accountBalance + userInput > 5000)
+                {
+                    Console.WriteLine("Cannot exceed $5,000 in account");
+                    Console.WriteLine();
+                    return accountBalance;
+                }
+                FileAccess.AuditBalance(userInput, (accountBalance + userInput));
+                Console.WriteLine();
+                return accountBalance += userInput;
+            }
+            catch
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a valid Number");
                 Console.WriteLine();
                 return accountBalance;
             }
-            FileAccess.AuditBalance(userInput, (accountBalance + userInput));
-            return accountBalance += userInput;
 
         }
         public void SelectProducts()
@@ -137,46 +148,55 @@ namespace Capstone.Classes
             string selectCode = Console.ReadLine();
             Console.WriteLine();
             Console.WriteLine("What is the quantity you would like to purchase?");
-            int selectQuantity = int.Parse(Console.ReadLine());
-            Console.WriteLine();
 
-
-
-            foreach (CateringItem i in this.catering.FullList)
+            try
             {
-                if (selectCode.ToLower() == i.Code.ToLower())
+                int selectQuantity = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+
+
+
+                foreach (CateringItem i in this.catering.FullList)
                 {
-                    if (i.Ammount - selectQuantity >= 0)
+                    if (selectCode.ToLower() == i.Code.ToLower())
                     {
-                        FileAccess.AuditProduct(i, selectQuantity);
-                        if (purchaseList.ContainsKey(i))
+                        if (i.Ammount - selectQuantity >= 0)
                         {
-                            purchaseList[i] += selectQuantity;
-                            i.Ammount -= selectQuantity;
-                            return;
+                            FileAccess.AuditProduct(i, selectQuantity);
+                            if (purchaseList.ContainsKey(i))
+                            {
+                                purchaseList[i] += selectQuantity;
+                                i.Ammount -= selectQuantity;
+                                return;
+                            }
+                            else
+                            {
+                                purchaseList.Add(i, selectQuantity);
+                                i.Ammount -= selectQuantity;
+                                return;
+                            }
                         }
                         else
                         {
-                            purchaseList.Add(i, selectQuantity);
-                            i.Ammount -= selectQuantity;
+                            Console.WriteLine("Sorry, insufficient amount of item.");
+                            Console.WriteLine();
                             return;
+
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("Sorry, insufficient amount of item.");
-                        Console.WriteLine();
-                        return;
-
-                    }
                 }
+
+                Console.WriteLine("This item doesn't exist.");
+                Console.WriteLine();
+                return;
+
             }
-
-            Console.WriteLine("This item doesn't exist.");
-            Console.WriteLine();
-            return;
-
-
+            catch
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a valid input for item quantity");
+                Console.WriteLine();
+            }
         }
         public void CompleteTransaction()
         {
@@ -198,7 +218,7 @@ namespace Capstone.Classes
             {
                 foreach (KeyValuePair<CateringItem, int> item in purchaseList)
                 {
-                    Console.WriteLine($"{item.Value} {item.Key.Type} {item.Key.Name}  ${item.Key.Price} ${item.Key.Price * item.Value}");
+                    Console.WriteLine($"{item.Value} {item.Key.Type} {item.Key.Name} ${item.Key.Price} ${item.Key.Price * item.Value}");
                 }
                 Console.WriteLine();
                 Console.WriteLine("Total: $" + totalCost);
@@ -207,12 +227,12 @@ namespace Capstone.Classes
                 decimal change = accountBalance - totalCost;
                 Dictionary<string, decimal> money = new Dictionary<string, decimal>()
                 {
-                    {"Twenties",20.00m },
-                    {"Tens",10.00m },
-                    {"Fives",5.00m },
-                    {"Ones",1.00m },
-                    {"Quarters",0.25m },
-                    {"Dimes",0.10m },
+                    {"Twenties,",20.00m },
+                    {"Tens,",10.00m },
+                    {"Fives,",5.00m },
+                    {"Ones,",1.00m },
+                    {"Quarters,",0.25m },
+                    {"Dimes,",0.10m },
                     {"Nickles",0.05m },
 
                 };
@@ -222,11 +242,12 @@ namespace Capstone.Classes
                 foreach (KeyValuePair<string, decimal> i in money)
                 {
                     int billCount = (int)(change / money[i.Key]);
-                    Console.WriteLine(billCount + " " + i.Key);
+                    Console.Write(billCount + " " + i.Key + " ");
                     change -= billCount * i.Value;
                 }
                 FileAccess.AuditChange();
                 accountBalance = 0;
+                Console.WriteLine();
                 Console.WriteLine();
                 return;
             }
