@@ -36,6 +36,20 @@ namespace CapstoneTests
             //Assert
             Assert.AreEqual("", result);
         }
+        [TestMethod]
+        public void CateringItem_TypeNullReturnsEmpty()
+        {
+            //Arrange
+            CateringItem item = new CateringItem();
+            item.Code = "B5";
+            item.Name = "Jameson";
+            item.Price = 30.00m;
+            item.Type = null;
+            //Act
+            string result = item.FullType;
+            //Assert
+            Assert.AreEqual("", result);
+        }
 
     }
     

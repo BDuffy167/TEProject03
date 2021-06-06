@@ -29,15 +29,15 @@ namespace CapstoneTests
             Assert.AreEqual("A5",catering.FullList[0].Code);
         }
         [TestMethod]
-        public void CateringInstanceShouldBeCreate()
+        public void CateringTest_NoStringReturnsEmpty()
         {
             // Arrange 
             Catering catering = new Catering();
 
             // Act
-
+            catering.AddItem("A5||70.20|A");
             // Assert
-            Assert.IsNotNull(catering);
+            Assert.AreEqual("",catering.FullList[0].Name);
         }
     }
 }

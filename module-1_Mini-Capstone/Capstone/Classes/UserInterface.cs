@@ -19,6 +19,7 @@ namespace Capstone.Classes
 
         private Catering catering;
         public FileAccess FileAccess { get; set; }
+
         public UserInterface()
         {
             this.catering = new Catering();

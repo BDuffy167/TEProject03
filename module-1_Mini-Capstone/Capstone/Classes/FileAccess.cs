@@ -20,7 +20,7 @@ namespace Capstone.Classes
         string dataFile = @"C:\Catering\Log.txt";
         private Catering catering;
 
-        decimal fileBalance = 0.00m;
+        private decimal fileBalance { get; set; } = 0.00m;
 
         public FileAccess(Catering catering)
         {
@@ -46,6 +46,7 @@ namespace Capstone.Classes
             catch (IOException ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Please quit and fix input file path.");
             }
         }
         public void AuditBalance(decimal money, decimal balance)

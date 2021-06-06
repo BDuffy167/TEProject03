@@ -24,16 +24,22 @@ namespace Capstone.Classes
 
         public void AddItem(string item)
         {
+            try
+            {
+                string[] itemAdded = item.Split('|');
+                CateringItem newItem = new CateringItem();
+                newItem.Code = itemAdded[0];
+                newItem.Name = itemAdded[1];
+                newItem.Type = itemAdded[3];
+                newItem.Price = decimal.Parse(itemAdded[2]);
 
-            string[] itemAdded = item.Split('|');
-            CateringItem newItem = new CateringItem();
-            newItem.Code = itemAdded[0];
-            newItem.Name = itemAdded[1];
-            newItem.Price = decimal.Parse(itemAdded[2]);
-            newItem.Type = itemAdded[3];
-
-            items.Add(newItem);
-        }
+                items.Add(newItem);
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Item manifest is formatted incorrectly. Please quit and fix before using.");
+            }
+            }
 
     }
 }
